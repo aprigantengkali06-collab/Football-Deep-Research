@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "pages/api/ai.js": {
+      "maxDuration": 60
+    },
+    "pages/api/football.js": {
+      "maxDuration": 30
+    }
+  }
+}
