@@ -100,9 +100,8 @@ function toWIB(utcDateStr) {
   return d.toISOString().slice(11, 16);
 }
 
-function todayWIB() {
-  const d = new Date(Date.now() + 7 * 3600000);
-  return d.toISOString().slice(0, 10);
+function todayUTC() {
+  return new Date().toISOString().slice(0, 10);
 }
 
 function getStatus(s) {
@@ -293,7 +292,7 @@ function PickCard({ fixture, standings, rank, leagueName }) {
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
 export default function App() {
-  const [date, setDate]         = useState(todayWIB);
+  const [date, setDate]         = useState(todayUTC);
   const [selLeagues, setSelLeagues] = useState([39, 140, 135]); // EPL, La Liga, Serie A default
   const [fixtures, setFixtures] = useState([]);
   const [standings, setStandings] = useState({});
@@ -435,101 +434,4 @@ export default function App() {
                   background: on ? "#1a1200" : "#0a1220",
                   color: on ? "#fbbf24" : "#64748b",
                 }}>
-                  <span style={{ fontSize: 13 }}>{l.flag}</span>
-                  <div>
-                    <div style={{ fontWeight: on ? 700 : 400, fontSize: 11 }}>{l.name}</div>
-                    <div style={{ fontSize: 8, opacity: 0.5 }}>LCC {l.lcc}</div>
-                  </div>
-                  {on && <span style={{ fontSize: 8, color: "#ca8a04" }}>✓</span>}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Auto-refresh & manual refresh */}
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <button onClick={fetchData} disabled={loading} style={{
-              flex: 1, padding: "10px", borderRadius: 8, border: "none", color: "white", fontSize: 13,
-              fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
-              background: loading ? "#0d1b2a" : "linear-gradient(135deg,#1e3a8a,#2563eb)"
-            }}>
-              {loading ? "🔄 Memuat..." : "🔄 Refresh Sekarang"}
-            </button>
-            <button onClick={() => setAutoRefresh(a => !a)} style={{
-              padding: "10px 14px", borderRadius: 8, border: `1px solid ${autoRefresh ? "#16a34a" : "#374151"}`,
-              color: autoRefresh ? "#4ade80" : "#64748b", background: autoRefresh ? "#052e16" : "#0d1b2a",
-              fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap"
-            }}>
-              {autoRefresh ? "⏱ Auto ON" : "⏱ Auto OFF"}
-            </button>
-          </div>
-
-          {lastUpdate && (
-            <div style={{ fontSize: 9, color: "#374151", marginTop: 8, textAlign: "center" }}>
-              Last update: {lastUpdate.toLocaleTimeString("id-ID")} WIB
-              {autoRefresh && " · Auto-refresh tiap 60 detik"}
-            </div>
-          )}
-        </div>
-
-        {/* Error */}
-        {error && (
-          <div style={{ background: "#1c0606", border: "1px solid #dc2626", borderRadius: 8, padding: 12, marginBottom: 12, color: "#fca5a5", fontSize: 12 }}>
-            ❌ <strong>Error:</strong> {error}
-          </div>
-        )}
-
-        {/* Picks */}
-        {picks.length > 0 && (
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: "#ca8a04", letterSpacing: 1.5, marginBottom: 10 }}>🏆 FINAL PICKS ({picks.length})</div>
-            {picks.map((f, i) => (
-              <PickCard
-                key={f.fixture.id}
-                fixture={f}
-                standings={standings[f.league.id]}
-                rank={i + 1}
-                leagueName={f.league.name}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Semua Match */}
-        {visibleFixtures.length > 0 && (
-          <div>
-            <div style={{ fontSize: 10, fontWeight: 700, color: "#ca8a04", letterSpacing: 1.5, marginBottom: 10 }}>
-              📋 SEMUA MATCH ({visibleFixtures.length})
-              {fixtures.length > visibleFixtures.length && (
-                <span style={{ color: "#374151", marginLeft: 8 }}>
-                  · {fixtures.length - visibleFixtures.length} sudah selesai disembunyikan
-                </span>
-              )}
-            </div>
-            {visibleFixtures.map(f => (
-              <MatchCard
-                key={f.fixture.id}
-                fixture={f}
-                standings={standings[f.league.id]}
-                leagueName={f.league.name}
-              />
-            ))}
-          </div>
-        )}
-
-        {!loading && visibleFixtures.length === 0 && !error && (
-          <div style={{ textAlign: "center", padding: "40px 0", color: "#374151" }}>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>📭</div>
-            <div style={{ fontSize: 13 }}>Tidak ada pertandingan untuk tanggal ini</div>
-            <div style={{ fontSize: 11, marginTop: 4 }}>Coba pilih tanggal lain atau tambah liga</div>
-          </div>
-        )}
-
-        <div style={{ background: "#07111c", border: "1px solid #1e293b", borderRadius: 8, padding: 12, fontSize: 10, color: "#374151", lineHeight: 1.7, marginTop: 12 }}>
-          ⚠️ <strong style={{ color: "#ef4444" }}>DISCLAIMER:</strong> FDRM v5.0 alat bantu analisis. Bukan jaminan. Verifikasi odds di bookmaker.
-          <br />📡 Data: API-Football · Refresh otomatis tiap 60 detik
-        </div>
-      </div>
-    </div>
-  );
-}
+      
